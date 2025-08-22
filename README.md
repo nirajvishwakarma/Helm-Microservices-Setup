@@ -4,7 +4,11 @@ In this guide, I'll walk through setting up a Kubernetes cluster with Minikube, 
 Design Notes
 
 Single Helm chart drives multiple services via values files.
+
 Config changes trigger rolling updates via checksum/config.
+
 Optional HPA & PDB per service.
+
 Flexible ServiceAccount creation.
+
 Default image: ealen/echo-server.

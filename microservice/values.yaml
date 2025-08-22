@@ -1,0 +1,84 @@
+# Global/common
+fullnameOverride: ""
+nameOverride: ""
+
+replicaCount: 2
+
+image:
+  repository: ealen/echo-server
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+containerPort: 80
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: http
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+podAnnotations: {}
+podLabels: {}
+
+# Probes
+probes:
+  liveness:
+    enabled: true
+    path: /
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  readiness:
+    enabled: true
+    path: /
+    initialDelaySeconds: 3
+    periodSeconds: 10
+    timeoutSeconds: 2
+    failureThreshold: 3
+  startup:
+    enabled: false
+    path: /
+
+# ConfigMap and Secret; mounted as env via envFrom
+config:
+  data:
+    BANNER: "Hello from default chart"
+    SERVICE_NAME: "{{ .Release.Name }}"
+
+secret:
+  enabled: true
+  stringData:
+    SECRET_MESSAGE: "shhh"
+
+env: [] # extra env vars list of { name: "", value: "" }
+
+serviceAccount:
+  create: true
+  name: "" # if empty and create=true, a SA named after the release is created
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: null
+
+pdb:
+  enabled: true
+  minAvailable: "50%"
+  # maxUnavailable: 1  # use either minAvailable or maxUnavailable
+
+commonLabels: {}
+commonAnnotations: {}

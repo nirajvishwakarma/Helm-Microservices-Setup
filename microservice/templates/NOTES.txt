@@ -1,0 +1,12 @@
+1. Get the service URL by running these commands:
+  export NS={{ .Release.Namespace }}
+  kubectl -n $NS get svc {{ include "microservice.fullname" . }}
+
+2. If using minikube, you can run:
+  minikube service -n $NS {{ include "microservice.fullname" . }}
+
+3. Or port-forward:
+  kubectl -n $NS port-forward svc/{{ include "microservice.fullname" . }} 8080:80
+
+4. Then curl:
+  curl -i http://127.0.0.1:8080/
